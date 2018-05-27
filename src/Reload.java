@@ -23,7 +23,7 @@ public class Reload extends Thread {
             e.printStackTrace();
         }
         Content.shootingLock = false;
-        Content.ammunition = 5;
-        Content.displayedAmmunition = "|||||";
+        Content.ammunition = 10;
+        Content.displayedAmmunition = "||||||||||";
     }
 }

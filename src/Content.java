@@ -32,14 +32,14 @@ public class Content extends JPanel implements ActionListener {
     public static boolean walrusAim = false;
     public static int score = 0;
 
-    public static int ammunition = 5;
-    public static String displayedAmmunition = "|||||";
+    public static int ammunition = 10;
+    public static String displayedAmmunition = "||||||||||";
 
     public static int walrusXVelocity = 0;
     public static int walrusYVelocity = 0;
 
-    public static int reticleSizeX = 1000;
-    public static int reticleSizeY = 1500;
+    public static int reticleSizeX = 1200;
+    public static int reticleSizeY = 2500;
 
     public static Robot robot;
 
@@ -136,8 +136,8 @@ public class Content extends JPanel implements ActionListener {
         graphics2D.drawImage(backgroundImage, 0, 0, (int)screenSize.getWidth(), (int)screenSize.getHeight(), null);
         graphics2D.drawImage(currentSkin, walrusX, walrusY, walrusSize, walrusSize, null);
         graphics2D.drawImage(currentReticle,
-                (int)MouseInfo.getPointerInfo().getLocation().getX() - 447,
-                (int)MouseInfo.getPointerInfo().getLocation().getY() - 740,
+                (int)MouseInfo.getPointerInfo().getLocation().getX() - 532,
+                (int)MouseInfo.getPointerInfo().getLocation().getY() - 718,
                 reticleSizeX, reticleSizeY, null);
 
         graphics2D.setRenderingHint(
@@ -153,6 +153,8 @@ public class Content extends JPanel implements ActionListener {
 
         if(GameTimer.count == 0) {
             Sound.playSound(endSound);
+            JOptionPane.showMessageDialog(null, "Your Score is: " + score, "Score",
+                    JOptionPane.ERROR_MESSAGE);
             GameTimer.count = -1;
             //destroy all the threads in the current process
         }

@@ -17,13 +17,13 @@ public class Recoil extends Thread {
             Content.reticleSizeX += Content.reticleSizeX * 0.012;
             Content.reticleSizeY += Content.reticleSizeY * 0.012;
             try {
-                Thread.sleep(8);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
         Content.currentReticle = Content.reticle;
-        Content.reticleSizeX = 1000;
-        Content.reticleSizeY = 1500;
+        Content.reticleSizeX = 1200;
+        Content.reticleSizeY = 2500;
     }
 }
