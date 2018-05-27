@@ -88,7 +88,8 @@ public class Content extends JPanel implements ActionListener {
         } catch (AWTException e) {
             e.printStackTrace();
         }
-
+        walrusMove = new WalrusMove();
+        walrusMove.start();
 
         //set current skin to the default walrus skin;
         currentSkin = defaultCharacter;
@@ -154,8 +155,6 @@ public class Content extends JPanel implements ActionListener {
         int currentMouseLocationY = (int) MouseInfo.getPointerInfo().getLocation().getY();
 //        System.out.println(walrusX + "," + walrusY + "    " + currentMouseLocationX + "," + currentMouseLocationY);
         //no idea how this works. This is a stilt
-        walrusMove = new WalrusMove();
-        walrusMove.start();
         if(currentMouseLocationX >= walrusX && currentMouseLocationX <= walrusX + walrusSize &&
                 currentMouseLocationY >= walrusY+35 && currentMouseLocationY <= walrusY + walrusSize+30) {
                 //mouse over walrus
