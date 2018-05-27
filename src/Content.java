@@ -1,15 +1,5 @@
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-import com.sun.corba.se.spi.orbutil.fsm.Input;
-import com.sun.media.jfxmedia.AudioClip;
-import com.sun.media.jfxmedia.Media;
-import com.sun.media.jfxmedia.MediaPlayer;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-
 import javax.imageio.ImageIO;
-import javax.sound.sampled.*;
 import javax.swing.*;
-import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +7,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Random;
 
 /**
@@ -32,6 +20,7 @@ public class Content extends JPanel implements ActionListener {
     private static Thread gameTimer = new GameTimer();
     private static Thread recoil = new Recoil();
     private static Thread walrusMove = new WalrusMove();
+    private static Thread kachunk = new Reload();
     private static Timer animationTimer;
     public static BufferedImage spriteSheet;
     public static BufferedImage currentSkin;
@@ -42,6 +31,9 @@ public class Content extends JPanel implements ActionListener {
     private static BufferedImage backgroundImage;
     public static boolean walrusAim = false;
     public static int score = 0;
+
+    public static int ammunition = 5;
+    public static String displayedAmmunition = "|||||";
 
     public static int walrusXVelocity = 0;
     public static int walrusYVelocity = 0;
@@ -54,7 +46,10 @@ public class Content extends JPanel implements ActionListener {
     public static File explosionSound = new File("C:\\Users\\alxye\\Desktop\\tiles\\420.wav");
     public static File endSound = new File("C:\\Users\\alxye\\Desktop\\tiles\\yee.wav");
     public static File gun = new File("C:\\Users\\alxye\\Desktop\\tiles\\gun.wav");
+    public static File reload = new File("C:\\Users\\alxye\\Desktop\\tiles\\reload.wav");
+    public static File magChange = new File("C:\\Users\\alxye\\Desktop\\tiles\\magazine.wav");
 
+    public static boolean shootingLock = false;
 
     private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -88,7 +83,6 @@ public class Content extends JPanel implements ActionListener {
         } catch (AWTException e) {
             e.printStackTrace();
         }
-        walrusMove = new WalrusMove();
         walrusMove.start();
 
         //set current skin to the default walrus skin;
@@ -102,7 +96,7 @@ public class Content extends JPanel implements ActionListener {
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 //walrus has been shot
-                if(!e.isMetaDown()) {
+                if(!e.isMetaDown() && !shootingLock) {
                     Sound.playSound(gun);
                     if (walrusAim) {
                         walrusShot = new WalrusShot();
@@ -111,6 +105,18 @@ public class Content extends JPanel implements ActionListener {
                     }
                     recoil = new Recoil();
                     recoil.start();
+                    Sound.playSound(Content.reload);
+                }
+                ammunition--;
+                displayedAmmunition = "";
+                if(ammunition > 0) {
+                    for (int i = 0; i < ammunition; i++) {
+                        displayedAmmunition += "|";
+                    }
+                }
+                else {
+                    kachunk = new Reload();
+                    kachunk.start();
                 }
             }
         });
@@ -141,6 +147,9 @@ public class Content extends JPanel implements ActionListener {
         graphics2D.setFont(font);
         graphics2D.drawString(String.valueOf(GameTimer.count), 10, 40);
         graphics2D.drawString(String.valueOf(score), screenSize.width - 100, 40);
+        graphics2D.drawString("Ammunition: " +
+                        displayedAmmunition
+                , screenSize.width - 500, 40);
 
         if(GameTimer.count == 0) {
             Sound.playSound(endSound);
